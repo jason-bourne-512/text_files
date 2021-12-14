@@ -1,0 +1,328 @@
+________________________________________________________________________________________________________________________
+
+********// -- To Start -- // ******
+
+:Goyo -- :Goyo! // distraction free writing 
+ncal -y -w // numbers all the weeks of the year 
+curl wttr.in/austin // shows the weather in * city 
+wikit <topic> // does a wikipedia search of topic displays text version  
+^p // autocomplete 
+
+export PS1='\[\033[1;34m\]\u \D{%A %B %d %I:%M} \w\$\[\033[0m\] '  //set the prompt to light blue with user and date  
+
+htop // displays machine info 
+cmatrix // matrix screen saver press ALt Enter -- fullscreen 
+
+-- be very specific about what you want to do 
+-- input?? output?? 
+-- use other peoples code - stand on the shoulders of giants 
+
+--- paste all below to deal with libc-bin error >> 
+sudo mv /var/lib/dpkg/info/libc-bin.* /tmp/
+sudo dpkg --remove --force-remove-reinstreq libc-bin
+sudo dpkg --purge libc-bin
+sudo apt install libc-bin
+sudo mv /tmp/libc-bin.* /var/lib/dpkg/info/
+
+________________________________________________________________________________________________________________________
+
+*********// --Tips and Tricks for Linux Command Line-- //*********
+
+brew search // homebrew install apps on Linux 
+brew search --desc "keyword" // search for specific program using a keyword 
+brew --help 
+
+tldr X // really cool tool to look up practical help on commands [X] in this case 
+whatis X // short index of eplanations for commands 
+X --help  //  
+apropos X  //
+man X //  
+
+cht.sh :help // amazing cheat sheet 
+cht.sh cpp functions // example 
+--> https://github.com/chubin/cheat.sh#editors-integration // explains cheat sheet 
+
+pando <filename.md> | lynx -stdin // read a markdown file in browser with working links 
+
+mail // util to send mail -- not working --> must select  trust third party apps for util to access gmail
+
+HISTTIMEFORMAT="%Y-%m-%d %T " // shows time and date of history commands 
+
+^ l // clear 
+
+ls 
+-sh // file size 
+-g // long list minus owner name
+-o // long list minus group name 
+ls z* // lists starting with z 
+
+locate <filename> // pretty powerful, searches the entire drive 
+sudo updatedb && locate -e bench-repo // force update to find new files [i think thats what this does lol]
+locate -i school*note // i case sensitive, search for any file that contains school and note 
+
+^a start of line
+^e end of line 
+^k del cursor to end 
+^u del cursor to start 
+^w del cursor to start word 
+^xx move cursor start of line to current pos
+
+Alt b back one word 
+Alt f forward one word 
+
+^r search history back  // you can search you history then below to escape --> keep pressing ^r to search term entered 
+^c // escape history search  
+
+touch // create file w/out any content 
+cat // crete file with content 
+
+apropos [keyword] THEN  help [commands] // first search whatever you're thinking of 
+// then returns list of commands you can get further info on with help commmand 
+
+info --help // info [command] to get help on the command 
+info coreutils  
+
+grep [term] <filename> // searches for term in that file 
+
+ps // display process status running
+
+owner--group--other (all)  // file specifications 
+
+7 rwx
+6 rw- 
+5 r-x
+4 r-- 
+
+// Install software from source code.
+	tar zxvf sourcecode.tar.gz
+	cd sourcecode
+	./configure
+	make
+	make install
+
+tty -- controlling terminal
+
+
+CLI // search to jump right to end of CLI linux notes 
+
+cd mytemp 
+if (( $? == 0 )); then rm* ; fi // if the call directory worked it will remove all the files in the dir 
+
+cd mytmp && rm* // same command as above but works through a conditional 
+
+set -e  // script exits immeadiately after a failed command (non-zero) exit code
+set -o pipefail // script exit if encounter error mid-pipe (ie if youre stringing along commands together with ||)
+set -u // exit when there is an undefined value 
+
+
+// if youre writing to a file and an error occurs it will direct it to stderr which is the monitor 
+// you can change this by **explicitly**  (2>)  directing any errors to a file 
+// simply redirecting stdout will NOT redirect stderr as well -- must be intentionally redirected 
+
+ 
+________________________________________________________________________________________________________________________
+
+*********// --Bash Sripting-- //*********
+
+info bash // type into CL  
+
+explainshell.com // amazing explanation of scripting commands 
+
+#!/usr/bin/bash //  which bash __ where is your bash located __ put as header in your scripts 
+
+cal // calendar command  eg cal -B4 -A2  -> 4 months before current and 2 after   https://www.howtoforge.com/linux-cal-ncal-u=
+
+GRUB grand unified boot loader 
+
+internal field seperator __ space tab newline 
+
+script_name.sh // file extension 
+
+awk command is really powerful __ understand its uses 
+
+	**-- combining commands with pipes and alias -- ** 
+		ifconfig | grep broadcast | awk '{print $2}' // cuts the ip address out of the string of info returned
+		alias ipadddy ="echo $(ifconfig | grep broadcast | awk '{print $2}')" // put it all in a return variable 
+
+used in system admin, web app development, data crunching, automated backups, getting things done 
+
+#!/bin/bash  // header 
+
+chmod 700 <script_name> 
+chmod u+x <file_name> 
+
+bc -q // suppress intro to calculator
+^d // to exit from bash calculator 
+
+who > test1 // output command to file 
+date >> test1 // append the date to file 
+
+ls -la | cat > delete.txt // using pipes for multiples commands store results in a file 
+
+	** structured commands **
+		if __ exit status of command 0, executed successfully 
+		then __ executes  
+ 
+	bash assigns positional parameters to all command line parameters 
+	$0 script name $1 first $2 second parameter 
+
+&> // output stderr stdout to same file 
+1> // standard output 
+2> // standard error 
+
+__ if conditional tests __ 
+
+	-n string // length of string > 0 
+	-z strng // string is empty 
+	x -eq y // equal 
+	  -gt // greater than 
+	  -lt // less than 
+	-d file // is a dir
+	-e file // file exists 
+	-r file // file exists, read permission granted 
+	-s file // file exists, size it > 0, not empty 
+	-w file // file exists, write permission granted 
+	-x file // files exits, execute permission granted 
+
+command line parameters 
+
+	$0 // script name
+	$1 $2 etc... // positional parameters 
+	$# // number of parameters in command line 
+	$* // treats all parameters as one word 
+	$@ // takes them all seperately -- "$@" expands to seperate strings "$1" "$2" "$3" 
+	$? // holds/returns last exit command code
+
+OIFS=$IFS; IFS=: // set old internal field seperator to current, then change current, finally change back to original 
+
+https://www.computerhope.com/unix/bash/getopts.htm // explanation of command getopts -- adding options to user defined commands 
+
+(summary of getoptscommand) 
+-- option? in opstring --> optname=variable [if option  needs argument = $OPTARG, expect but not found optname=:] --> if no match  then optname=? 
+
+__** getopts **__ 
+
+	run getopts --> looks for options defined in -- optstring 
+
+	if finds one -- optname = variable  
+		if option expects an argument then places it in $OPTARG 	
+		expects argument but not found optname=: 
+
+	not find option in optstring then --> optname = ?
+
+	-- // end of options 
+
+
+exit code 127 // command not found 
+
+grep -n "searchTerm" <filename> // searches file for term with numbering 
+
+----------------------------------------------------------------------------------
+** awk command language **  
+
+https://linuxize.com/post/awk-command/ // excellend awk command summary 
+www.gnu.org/software/gawk/manual/gawk.html#Part-I_003a-The-awk-Language // exhaustive explanation 
+ 
+awk '{print}' <filename> // prints everything out in file by defualt 
+awk '/manager/ {print}' <filename> // print lines matching 
+awk '{print $1, $3}' <filename> // 1st and 3rd fields in line 
+awk '{print NR, $0}' <filename> // print entire line with numbers 
+awk 'NR==3, NR==6 {print NR, $0}' <filename> // print from line# 3-6
+awk '{print NF}' <filename> // prints the number of fields in line 
+awk '{print $NF}' <file> // prints the last column 
+awk 'OFS="/" {print $1, $4}' <file> // prints field 1 and 4 seperated by / 
+
+OFS // output field seperator 
+ 
+date | awk 'OFS="-" {print $2, $3, $6}' // Nov-26-2021 
+awk -F: '{print $1, $6}' /etc/passwd // used colon : as field seperator 
+awk '/^[0-9][0-9]/ { print $1 }' teams.txt // print first field of any line that starts with numbers 
+					   // ^ -- is for start of the line 
+
+-----------------------------------------------------------------------------------
+
+sed 's/thee/the/ <file> // replace old with new word 
+
+
+bash1 // search for this to add to bash notes  
+	
+	 
+	
+
+________________________________________________________________________________________________________________________
+
+**** // C Guide // ****
+
+	%c char
+	%d or %i int
+	%s string 
+	%p pointer address 
+
+__________________________________________________________________________________________________________________________
+
+******* // -- Vim Commands -- //*********
+
+www.linuxtrainingacademy.com/vim-cheat-sheet//
+
+:help x // :help w??
+
+:NERDTree // file manager  
+
+^v d p // highlight cut paste text
+:num  // jump to line num 
+
+:o // open a line below current position 
+:O // above current pos 
+
+w // start of next word -- words including delimeters 
+W // start of next WORD -- only words
+e // end of current word 
+E // WORD 
+b // previous (before) word 
+B // before WORD 
+
+ESC 12W --> hop 12 WORDS -- don't see the dif  betweeb w W 
+-- can use numbers with all these ^^^ 
+
+^d // down half page 
+^u // up
+^f // down full 
+^b // up full (backwards) 
+
+* search for word under cursor, # to reverse 
+/  ^r ^w  search for word under curosor, ^o jump to previous position 
+
+c // change : sentence word letter, as-w-r- need [as] as in, "a sentence"  
+c$ // change to end of sentence 
+R // replace mode 
+t. // copy + paste line 
+  
+HLM // high low middle 
+
+^w n // new file split window 
+^w = // resize all windows equally 
+^w r // to reposition windows 
+:ter // terminal command line 
+:! // execute shell command 
+:Explore // directory struture 
+^w direction  // to jump between windows 
+:e <filename> // open file ?? 
+
+:s/thee/the // substitute 
+:%s/old/new/gc // global substitution with prompt 
+
+
+
+ctags : finds functions in a directory 
+	vim -R * // make a tag of all funs in dir
+	vim -t <func_name> to open a vim file of that function 
+
+__________________________________________________________________________________________________________________________
+
+********* // -- Kali Linux -- // ************
+
+apt-get install tor -y  
+	adduser <name> 
+	// skip all that 
+
+
